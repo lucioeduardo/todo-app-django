@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Lista de tarefas</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ create_todo_form }}
+        <input type="submit" value="Adicionar">
+    </form>
+
+    {% for todo in todos %}
+        <div style="margin: auto">
+        <div class="row justify-content-center mb-2 mt-2">
+            <div class="col-4">
+                <form method="POST" action="/check/{{todo.id}}">
+                    {% csrf_token %}
+                    <input onChange="this.form.submit()" class="form-check-input" name="completed" type="checkbox" {% if todo.completed%} checked {% endif %} id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        {{ todo.description }}
+                    </label>
+                </form>
+                
+            </div>
+
+            <div class="col-4">
+                <form method="POST" action="/delete/{{todo.id}}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Apagar</button>
+                </form>
+            </div>
+        </div>
+        </div>
+        <hr>
+    {% endfor %}
+
+{% endblock %}
